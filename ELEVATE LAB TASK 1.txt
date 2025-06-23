@@ -1,0 +1,48 @@
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY IDENTITY(1,1),
+    Name VARCHAR(100),
+    Email VARCHAR(100) UNIQUE,
+    Address VARCHAR(255),
+    Phone VARCHAR(15)
+);
+
+CREATE TABLE Category (
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    CategoryName VARCHAR(100)
+);
+
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
+    ProductName VARCHAR(100),
+    Price DECIMAL(10, 2),
+    Stock INT,
+    CategoryID INT,
+    FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+);
+
+CREATE TABLE [Order] (
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE OrderItem (
+    OrderItemID INT PRIMARY KEY IDENTITY(1,1),
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    Subtotal DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES [Order](OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY IDENTITY(1,1),
+    OrderID INT,
+    PaymentDate DATE,
+    PaymentMethod VARCHAR(50),
+    Amount DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES [Order](OrderID)
+);
